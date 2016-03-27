@@ -1,6 +1,9 @@
 *.rbc
 capybara-*.html
 .rspec
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
 /log
 /tmp
 /db/*.sqlite3
@@ -33,3 +36,11 @@ bower.json
 
 # Ignore pow environment settings
 .powenv
+
+.idea/
+/.idea/workspace.xml
+dump.rdb
+gov_msg
+.sass-cache
+/public/image_uploads
+.DS_Store
