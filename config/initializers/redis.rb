@@ -10,7 +10,7 @@ default_port = 6382
 #elsif Socket.gethostname == "stage-sp"
 #  $redis = Redis.new(:timeout => 10.0,:host => '10.200.139.26', :port => default_port)
 #else
-  $redis = Redis.new(:timeout => 10.0,:host => 'localhost', :port => default_port)
+  # $redis = Redis.new(:timeout => 10.0,:host => 'localhost', :port => default_port)
 #end
 
 

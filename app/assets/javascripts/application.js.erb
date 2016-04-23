@@ -115,38 +115,39 @@ function show_confirm_modal_remove(path, question) {
     });
 }
 
-var lock = false;
-
-function lastAddedLiveFunc() {
-    if ($('#lastPostsLoader').length > 0) {
-        $('#lastPostsLoader').html('<img src="<%= asset_path('themes/ajax-loading.gif') %>"/>');
-        var url = $('#next').attr('href');
-        $.getScript(url, function () {
-            $('#lastPostsLoader').empty();
-            App.fixContentHeight(); // fix content height
-            App.initUniform(); // initialize uniform elements
-            lock = false;
-        });
-    }
-}
-;
-
-//lastAddedLiveFunc();
-$(window).scroll(function () {
-    if ($('#lastPostsLoader').length > 0) {
-        var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();
-        var scrolltrigger = 0.95;
-
-        if ((wintop / (docheight - winheight)) > scrolltrigger) {
-            //console.log('scroll bottom');
-            if (!lock) {
-                lock = true;
-                lastAddedLiveFunc();
-            }
-
-        }
-    }
-});
+//auto loading more
+//var lock = false;
+//
+//function lastAddedLiveFunc() {
+//    if ($('#lastPostsLoader').length > 0) {
+//        $('#lastPostsLoader').html('<img src="<%= asset_path('themes/ajax-loading.gif') %>"/>');
+//        var url = $('#next').attr('href');
+//        $.getScript(url, function () {
+//            $('#lastPostsLoader').empty();
+//            App.fixContentHeight(); // fix content height
+//            App.initUniform(); // initialize uniform elements
+//            lock = false;
+//        });
+//    }
+//}
+//;
+//
+////lastAddedLiveFunc();
+//$(window).scroll(function () {
+//    if ($('#lastPostsLoader').length > 0) {
+//        var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();
+//        var scrolltrigger = 0.95;
+//
+//        if ((wintop / (docheight - winheight)) > scrolltrigger) {
+//            //console.log('scroll bottom');
+//            if (!lock) {
+//                lock = true;
+//                lastAddedLiveFunc();
+//            }
+//
+//        }
+//    }
+//});
 
 var App = function () {
 
@@ -168,9 +169,17 @@ var App = function () {
         'green': '#35aa47',
         'purple': '#852b99',
         'grey': '#555555',
-        'light-grey': '#fafafa',
-        'yellow': '#ffb848'
+        'light-grey': '#fafafa'
     };
+
+    var layoutColorCss = {
+        'default': '<%= asset_path( 'themes/default' ) %>',
+        'brown': '<%= asset_path( 'themes/brown' ) %>',
+        'blue': '<%= asset_path( 'themes/blue' ) %>',
+        'purple': '<%= asset_path( 'themes/purple' ) %>',
+        'grey': '<%= asset_path( 'themes/grey' ) %>',
+        'light': '<%= asset_path( 'themes/light' ) %>'
+    }
 
     var handleInit = function () {
 
@@ -190,7 +199,7 @@ var App = function () {
     var handleDesktopTabletContents = function () {
         // loops all page elements with "responsive" class and applies classes for tablet mode
         // For metornic  1280px or less set as tablet mode to display the content properly
-        if ($(window).width() <= 1280) {
+        if ($(window).width() <= 1280 || $('body').hasClass('page-boxed')) {
             $(".responsive").each(function () {
                 var forTablet = $(this).attr('data-tablet');
                 var forDesktop = $(this).attr('data-desktop');
@@ -203,7 +212,7 @@ var App = function () {
 
         // loops all page elements with "responsive" class and applied classes for desktop mode
         // For metornic  higher 1280px set as desktop mode to display the content properly
-        if ($(window).width() > 1280) {
+        if ($(window).width() > 1280 && $('body').hasClass('page-boxed') === false) {
             $(".responsive").each(function () {
                 var forTablet = $(this).attr('data-tablet');
                 var forDesktop = $(this).attr('data-desktop');
@@ -454,6 +463,8 @@ var App = function () {
                 return;
             }
 
+            $(".sidebar-search", sidebar).removeClass("open");
+
             if (body.hasClass("page-sidebar-closed")) {
                 body.removeClass("page-sidebar-closed");
                 if (body.hasClass('page-sidebar-fixed')) {
@@ -465,6 +476,37 @@ var App = function () {
             runResponsiveHandlers();
         });
 
+        // handle the search bar close
+        $('.page-sidebar').on('click', '.sidebar-search .remove', function (e) {
+            e.preventDefault();
+            $('.sidebar-search').removeClass("open");
+        });
+
+        // handle the search query submit on enter press
+        $('.page-sidebar').on('keypress', '.sidebar-search input', function (e) {
+            if (e.which == 13) {
+                window.location.href = "extra_search.html";
+                return false; //<---- Add this line
+            }
+        });
+
+        // handle the search submit
+        $('.sidebar-search .submit').on('click', function (e) {
+            e.preventDefault();
+
+            if ($('body').hasClass("page-sidebar-closed")) {
+                if ($('.sidebar-search').hasClass('open') == false) {
+                    if ($('.page-sidebar-fixed').size() === 1) {
+                        $('.page-sidebar .sidebar-toggler').click(); //trigger sidebar toggle button
+                    }
+                    $('.sidebar-search').addClass("open");
+                } else {
+                    window.location.href = "extra_search.html";
+                }
+            } else {
+                window.location.href = "extra_search.html";
+            }
+        });
     }
 
     var handleHorizontalMenu = function () {
@@ -664,6 +706,137 @@ var App = function () {
         }
     }
 
+    var handleTheme = function () {
+
+        var panel = $('.color-panel');
+
+        if ($('body').hasClass('page-boxed') == false) {
+            $('.layout-option', panel).val("fluid");
+        }
+
+        $('.sidebar-option', panel).val("default");
+        $('.header-option', panel).val("fixed");
+        $('.footer-option', panel).val("default");
+
+        //handle theme layout
+        var resetLayout = function () {
+            $("body").
+                    removeClass("page-boxed").
+                    removeClass("page-footer-fixed").
+                    removeClass("page-sidebar-fixed").
+                    removeClass("page-header-fixed");
+
+            $('.header > .navbar-inner > .container').removeClass("container").addClass("container-fluid");
+
+            if ($('.page-container').parent(".container").size() === 1) {
+                $('.page-container').insertAfter('.header');
+            }
+
+            if ($('.footer > .container').size() === 1) {
+                $('.footer').html($('.footer > .container').html());
+            } else if ($('.footer').parent(".container").size() === 1) {
+                $('.footer').insertAfter('.page-container');
+            }
+
+            $('body > .container').remove();
+        }
+
+        var lastSelectedLayout = '';
+
+        var setLayout = function () {
+
+            var layoutOption = $('.layout-option', panel).val();
+            var sidebarOption = $('.sidebar-option', panel).val();
+            var headerOption = $('.header-option', panel).val();
+            var footerOption = $('.footer-option', panel).val();
+
+            if (sidebarOption == "fixed" && headerOption == "default") {
+                alert('Default Header with Fixed Sidebar option is not supported. Proceed with Default Header with Default Sidebar.');
+                $('.sidebar-option', panel).val("default");
+                sidebarOption = 'default';
+            }
+
+            resetLayout(); // reset layout to default state
+
+            if (layoutOption === "boxed") {
+                $("body").addClass("page-boxed");
+
+                // set header
+                $('.header > .navbar-inner > .container-fluid').removeClass("container-fluid").addClass("container");
+                var cont = $('.header').after('<div class="container"></div>');
+
+                // set content
+                $('.page-container').appendTo('body > .container');
+
+                // set footer
+                if (footerOption === 'fixed' || sidebarOption === 'default') {
+                    $('.footer').html('<div class="container">' + $('.footer').html() + '</div>');
+                } else {
+                    $('.footer').appendTo('body > .container');
+                }
+            }
+
+            if (lastSelectedLayout != layoutOption) {
+                //layout changed, run responsive handler:
+                runResponsiveHandlers();
+            }
+            lastSelectedLayout = layoutOption;
+
+            //header
+            if (headerOption === 'fixed') {
+                $("body").addClass("page-header-fixed");
+                $(".header").removeClass("navbar-static-top").addClass("navbar-fixed-top");
+            } else {
+                $("body").removeClass("page-header-fixed");
+                $(".header").removeClass("navbar-fixed-top").addClass("navbar-static-top");
+            }
+
+            //sidebar
+            if (sidebarOption === 'fixed') {
+                $("body").addClass("page-sidebar-fixed");
+            } else {
+                $("body").removeClass("page-sidebar-fixed");
+            }
+
+            //footer
+            if (footerOption === 'fixed') {
+                $("body").addClass("page-footer-fixed");
+            } else {
+                $("body").removeClass("page-footer-fixed");
+            }
+
+            handleSidebarAndContentHeight(); // fix content height
+            handleFixedSidebar(); // reinitialize fixed sidebar
+            handleFixedSidebarHoverable(); // reinitialize fixed sidebar hover effect
+        }
+
+        // handle theme colors
+        var setColor = function (color) {
+            $('#style_color').attr("href", layoutColorCss[color]);
+            $.cookie('style_color', color);
+        }
+
+        $('.icon-color', panel).click(function () {
+            $('.color-mode').show();
+            $('.icon-color-close').show();
+        });
+
+        $('.icon-color-close', panel).click(function () {
+            $('.color-mode').hide();
+            $('.icon-color-close').hide();
+        });
+
+        $('li', panel).click(function () {
+            var color = $(this).attr("data-style");
+            setColor(color);
+            $('.inline li', panel).removeClass("current");
+            $(this).addClass("current");
+        });
+
+        $('.layout-option, .header-option, .sidebar-option, .footer-option', panel).change(setLayout);
+    }
+
+
     var handleFixInputPlaceholderForIE = function () {
         //fix html5 placeholder attribute for ie7 & ie8
         if (isIE8 || isIE9) { // ie7&ie8
@@ -716,6 +889,7 @@ var App = function () {
             handleSidebarToggler(); // handles sidebar hide/show
             handleFixInputPlaceholderForIE(); // fixes/enables html5 placeholder attribute for IE9, IE8
             handleGoTop(); //handles scroll to top functionality in the footer
+            handleTheme(); // handles style customer tool
 
             //ui component handlers
             handlePortletTools(); // handles portlet action bar functionality(refresh, configure, toggle, remove)

@@ -166,7 +166,7 @@
     
     $('<span class="tag">')
       .text(value)
-      .append($('<button type="button" class="close"></button>') //modified by keenthemes sinse close class already defined in global style(style.css)
+      .append($('<button type="button" class="close"></button>') //modified by keenthemes sinse close class already defined in global style(style.css.erb)
         .on('click', function () {
           that.remove(that.element.siblings('.tag').index($(this).closest('.tag')))
         })

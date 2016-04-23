@@ -1,0 +1,469 @@
+<!--<div class="span12 responsive" style="margin-top: 50px" data-tablet="span12 fix-offset" data-desktop="span12">-->
+
+  <!--&lt;!&ndash; BEGIN EXAMPLE TABLE PORTLET&ndash;&gt;-->
+
+  <!--<div class="portlet box grey">-->
+
+    <!--<div class="portlet-title">-->
+
+      <!--<div class="caption"><i class="icon-tasks"></i>订单列表</div>-->
+
+      <!--<div class="tools">-->
+
+        <!--<a href="javascript:;" class="collapse"></a>-->
+
+        <!--<a href="javascript:;" class="remove"></a>-->
+
+      <!--</div>-->
+
+    <!--</div>-->
+
+    <!--<div class="portlet-body">-->
+
+
+      <!--<table class="table table-striped table-bordered table-hover table-full-width" id="order_list">-->
+
+        <!--<thead>-->
+
+        <!--<tr>-->
+
+          <!--<th>ID</th>-->
+
+          <!--<th>订单号</th>-->
+
+          <!--<th class="hidden-480">订单类型</th>-->
+
+          <!--<th class="hidden-480">成交价格</th>-->
+
+          <!--<th class="hidden-480">客户电话</th>-->
+
+          <!--<th class="hidden-480">订单状态</th>-->
+
+          <!--<th class="hidden-480">客户评分</th>-->
+
+          <!--<th class="hidden-480">备注</th>-->
+
+          <!--<th class="hidden-480">创建日期</th>-->
+
+          <!--<th class="hidden-480">操作</th>-->
+
+          <!--<th class="hidden-480">取消订单</th>-->
+
+        <!--</tr>-->
+
+        <!--</thead>-->
+
+        <!--<tbody>-->
+        <!--<% if !@orders.blank? %>-->
+            <!--<% @orders.each do |l| %>-->
+                <!--<tr class="odd gradeX">-->
+
+                  <!--<td><%= l.id %></td>-->
+
+                  <!--<td>-->
+                    <!--<%= l[:order_number] %>-->
+                  <!--</td>-->
+
+                  <!--<td class="hidden-480">-->
+
+                    <!--<% if l.discount.blank? %>-->
+                        <!--<span class="label label-success">服务已删除</span>&nbsp-->
+                    <!--<% else %>-->
+                        <!--<% l.discount.discount_types.each do |discount_type| %>-->
+
+                            <!--<span class="label label-success"><%= discount_type.name %></span>&nbsp-->
+
+                        <!--<% end %>-->
+                    <!--<% end %>-->
+
+                  <!--</td>-->
+
+                  <!--<td class="hidden-480">-->
+                    <!--<% if !l.price.blank? %>-->
+                        <%= l[:price] %>元
+                    <!--<% end %>-->
+                  <!--</td>-->
+
+                  <!--<td class="hidden-480"><%= (l.user.blank?) ? '该用户已被删除' : l.user.phone %></td>-->
+
+                  <!--<td class="hidden-480"><%= ORDER_STATUS[l[:status]] %></td>-->
+
+                  <!--<td class="hidden-480"><%= (l.score_record.blank?) ? '未评分' : l.score_record.average_grade %></td>-->
+
+                  <!--<td class="hidden-480"><%= l[:remark] %></td>-->
+
+                  <!--<td>-->
+                    <!--<%= (l.created_at.blank?) ? nil : l.created_at.strftime('%Y年%m月%d日 %H时%M分') %>-->
+                  <!--</td>-->
+
+                  <!--<td>-->
+                    <!--<% if l[:status]==0 %>-->
+                        <!--<a class="consume" href="javascript:;">确认消费</a>-->
+                    <!--<% elsif l[:status]==1 %>-->
+                        <!--<a class="confirmation" href="javascript:;">确认订单</a>-->
+                    <!--<% else %>-->
+                        <!--<%= ORDER_STATUS[l[:status]] %>-->
+                    <!--<% end %>-->
+                  <!--</td>-->
+
+                  <!--<td>-->
+                    <!--<% if l[:status]==0 || l[:status]==1 %>-->
+                        <!--<a class="delete" href="javascript:;">取消订单</a>-->
+                    <!--<% end %>-->
+                  <!--</td>-->
+
+                <!--</tr>-->
+
+            <!--<% end %>-->
+        <!--<% end %>-->
+        <!--</tbody>-->
+      <!--</table>-->
+
+
+    <!--</div>-->
+
+  <!--</div>-->
+
+  <!--&lt;!&ndash; END EXAMPLE TABLE PORTLET&ndash;&gt;-->
+
+<!--</div>-->
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+
+<!--//    if ($('#order_list').length) {-->
+<!--//        order_list_table = $('#order_list').dataTable({-->
+<!--//            "aLengthMenu": [-->
+<!--//                [5, 15, 20, -1],-->
+<!--//                ["5", "15", "20", "所有"] // change per page values here-->
+<!--//            ],-->
+<!--//            // set the initial value-->
+<!--//            "iDisplayLength": 20,-->
+<!--//            "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",-->
+<!--//            "sPaginationType": "bootstrap",-->
+<!--//            "oLanguage": {-->
+<!--//                "sLengthMenu": "_MENU_ per page",-->
+<!--//                "sProcessing": "正在加载中......",-->
+<!--//                "sLengthMenu": "每页显示 _MENU_ 条记录",-->
+<!--//                "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",-->
+<!--//                "sZeroRecords": "没有符合条件的数据！",-->
+<!--//                "sEmptyTable": "表中无数据存在！",-->
+<!--//                "sInfoFiltered": "(_MAX_)",-->
+<!--//                "sInfoEmpty": "显示 0 至 0 共 0 项",-->
+<!--//                "sSearch": "搜索：",-->
+<!--//                "oPaginate": {-->
+<!--//                    "sFirst": "首页",-->
+<!--//                    "sPrevious": "上一页",-->
+<!--//                    "sNext": "下一页",-->
+<!--//                    "sLast": "末页"-->
+<!--//                }-->
+<!--//            },-->
+<!--//            "aoColumnDefs": [-->
+<!--//                { "bVisible": false, "aTargets": [ 0, 8 ] },-->
+<!--//                {-->
+<!--//                    'bSortable': false,-->
+<!--//                    'aTargets': [ 4 ]-->
+<!--//                }-->
+<!--//            ]-->
+<!--//        });-->
+<!--//        order_list_table.fnSort([-->
+<!--//            [8, 'desc']-->
+<!--//        ]);-->
+<!--//-->
+<!--//        jQuery('#order_list_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input-->
+<!--//        jQuery('#order_list_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown-->
+<!--//        jQuery('#order_list_wrapper .dataTables_length select').select2(); // initialzie select2 dropdown-->
+<!--//-->
+<!--//        $('#order_list a.delete').die('click');-->
+<!--//        $('#order_list a.confirmation').die('click');-->
+<!--//        $('#order_list a.consume').die('click');-->
+<!--//-->
+<!--//        function update(path, nRow) {-->
+<!--//            $.ajax({-->
+<!--//                async: false,-->
+<!--//                type: "GET",-->
+<!--//                url: path,-->
+<!--//                dataType: "json",-->
+<!--//                success: function (result, textStatus, jqXHR) {-->
+<!--//                    if (result != false) {-->
+<!--//                        var str = "";-->
+<!--//                        if (result.status == 0)-->
+<!--//                            str = "<a class='consume' href='javascript:;'>确认消费</a>";-->
+<!--//                        else if (result.status == 1)-->
+<!--//                            str = "<a class='confirmation' href='javascript:;'>确认订单</a>";-->
+<!--//                        else-->
+<!--//                            str = result.status_value;-->
+<!--//                        order_list_table.fnUpdate(result.status_value, nRow, 5, false);-->
+<!--//                        order_list_table.fnUpdate(result.remark, nRow, 7, false);-->
+<!--//                        order_list_table.fnUpdate(result.created_at, nRow, 8, false);-->
+<!--//                        order_list_table.fnUpdate(str, nRow, 9, false);-->
+<!--//                        if (result.status != 2 && result.status != 3 && result.status != 4)-->
+<!--//                            str = "<a class='delete' href='javascript:;'>取消订单</a>";-->
+<!--//                        else-->
+<!--//                            str = '';-->
+<!--//                        order_list_table.fnUpdate(str, nRow, 10, false);-->
+<!--//                        order_list_table.fnDraw();-->
+<!--//                    } else {-->
+<!--//                        $('#messages').html('<%= escape_javascript(render('/layouts/messages')) %>');-->
+<!--//                    }-->
+<!--//                    App.fixContentHeight(); // fix content height-->
+<!--//                    App.initUniform(); // initialize uniform elements-->
+<!--//                }-->
+<!--//            });-->
+<!--//        }-->
+<!--//-->
+<!--//        $('#order_list a.confirmation').live('click', function (e) {-->
+<!--//            e.preventDefault();-->
+<!--//            var nRow = $(this).parents('tr')[0];-->
+<!--//            var aData = order_list_table.fnGetData(nRow);-->
+<!--//            var url = "/order_manager/confirm?id=" + aData[0];-->
+<!--//            update(url, nRow);-->
+<!--//        });-->
+<!--//-->
+<!--//        $('#order_list a.delete').live('click', function (e) {-->
+<!--//            e.preventDefault();-->
+<!--//            var nRow = $(this).parents('tr')[0];-->
+<!--//            var aData = order_list_table.fnGetData(nRow);-->
+<!--//            var url = "/order_manager/close?id=" + aData[0];-->
+<!--//            update(url, nRow);-->
+<!--//        });-->
+<!--//-->
+<!--//-->
+<!--//        $('#order_list a.consume').live('click', function (e) {-->
+<!--//            e.preventDefault();-->
+<!--//            var nRow = $(this).parents('tr')[0];-->
+<!--//            var aData = order_list_table.fnGetData(nRow);-->
+<!--//            var url = "/order_manager/consume?id=" + aData[0];-->
+<!--//            update(url, nRow);-->
+<!--//        });-->
+<!--//-->
+<!--//    }-->
+<!--//-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+<body class="left-sidebar">
+
+<!-- Wrapper -->
+<div align=center>
+  <div style=“width:960px; margin:0 auto; height:90px;”>
+    <script>
+        (function() {
+            var s = "_" + Math.random().toString(36).slice(2);
+            document.write('<div id="' + s + '"></div>');
+            (window.slotbydup=window.slotbydup || []).push({
+                id: '730419',
+                container: s,
+                size: '960,90',
+                display: 'inlay-fix'
+            });
+        })();
+    </script>
+    <script src="http://dup.baidustatic.com/js/os.js"></script>
+  </div>
+</div>
+<div id="wrapper">
+
+  <!-- Content -->
+  <div id="content" class="mobileUI-main-content">
+    <div id="content-inner">
+
+      <!-- Post -->
+      <article class="is-post is-post-excerpt">
+        <header>
+          <h2><a href="#">Welcome to Striped</a></h2>
+          <span class="byline">A free, fully responsive HTML5 site template by AJ for HTML5 Up!</span>
+        </header>
+        <div class="info">
+          <span class="date"><span class="month">Jan<span>uary</span></span> <span class="day">14</span><span class="year">, 2013</span></span>
+          <ul class="stats">
+            <li><a href="#" class="link-icon24 link-icon24-1">16</a></li>
+            <li><a href="#" class="link-icon24 link-icon24-2">32</a></li>
+            <li><a href="#" class="link-icon24 link-icon24-3">64</a></li>
+            <li><a href="#" class="link-icon24 link-icon24-4">128</a></li>
+          </ul>
+        </div>
+        <a href="#" class="image image-full"><img src="images/n33-robot-invader.jpg" alt="" /></a>
+        <p>
+          <strong>Hello!</strong> You're looking at <a href="#striped/">Striped</a>, a fully responsive HTML5 site template designed by AJ
+          for <a href="http://www.huiyi8.com/" title="huiyi8素材网">huiyi8素材网</a> It features a clean, minimalistic design, styling for all basic page elements (including blockquotes, tables and lists), a
+          repositionable sidebar (left or right), and HTML5/CSS3 code designed for quick and easy customization (see code comments for details).
+        </p>
+        <p>
+          Striped is released for free under the <a href="#">Creative Commons Attribution license</a> so feel free to use it for personal projects
+          or even commercial ones &ndash; just be sure to credit <a href="http://www.huiyi8.com/" title="huiyi8素材网">huiyi8素材网</a> for the design. If you like what you see here, be sure to check out
+          <a href="http://www.huiyi8.com/" title="huiyi8素材网">huiyi8素材网</a> for more cool designs or follow me on <a href="#">Twitter</a> for new releases and updates.
+        </p>
+      </article>
+
+      <!-- Post -->
+      <article class="is-post is-post-excerpt">
+        <header>
+          <h2><a href="#">Lorem ipsum dolor sit amet</a></h2>
+          <span class="byline">Feugiat interdum sed commodo ipsum consequat dolor nullam metus</span>
+        </header>
+        <div class="info">
+          <span class="date"><span class="month">Jan<span>uary</span></span> <span class="day">8</span><span class="year">, 2013</span></span>
+          <ul class="stats">
+            <li><a href="#" class="link-icon24 link-icon24-1">12</a></li>
+            <li><a href="#" class="link-icon24 link-icon24-2">24</a></li>
+            <li><a href="#" class="link-icon24 link-icon24-3">48</a></li>
+            <li><a href="#" class="link-icon24 link-icon24-4">96</a></li>
+          </ul>
+        </div>
+        <a href="#" class="image image-full"><img src="images/fotogrph-dark-stairwell.jpg" alt="" /></a>
+        <p>
+          Quisque vel sapien sit amet tellus elementum ultricies. Nunc vel orci turpis. Donec id malesuada metus.
+          Nunc nulla velit, fermentum quis interdum quis, tate etiam commodo lorem ipsum dolor sit amet dolore.
+          Quisque vel sapien sit amet tellus elementum ultricies. Nunc vel orci turpis. Donec id malesuada metus.
+          Nunc nulla velit, fermentum quis interdum quis, convallis eu sapien. Integer sed ipsum ante.
+        </p>
+      </article>
+
+      <!-- Pager -->
+      <div class="pager">
+        <!--<a href="#" class="button previous">Previous Page</a>-->
+        <div class="pages">
+          <a href="#" class="active">1</a>
+          <a href="#">2</a>
+          <a href="#">3</a>
+          <a href="#">4</a>
+          <span>&hellip;</span>
+          <a href="#">20</a>
+        </div>
+        <a href="#" class="button next">Next Page</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar">
+
+    <!-- Logo -->
+    <div id="logo">
+      <h1 class="mobileUI-site-name">STRIPED</h1>
+    </div>
+
+    <!-- Nav -->
+    <nav id="nav" class="mobileUI-site-nav">
+      <ul>
+        <li class="current_page_item"><a href="#">Latest Post</a></li>
+        <li><a href="#">Archives</a></li>
+        <li><a href="#">About Me</a></li>
+        <li><a href="#">Contact Me</a></li>
+      </ul>
+    </nav>
+
+    <!-- Search -->
+    <section class="is-search is-first">
+      <form method="post" action="#">
+        <input type="text" class="text" name="search" placeholder="Search" />
+      </form>
+    </section>
+
+    <!-- Text -->
+    <section class="is-text-style1">
+      <div class="inner">
+        <p>
+        </p>
+      </div>
+    </section>
+
+    <!-- Recent Posts -->
+    <section class="is-recent-posts">
+      <header>
+        <h2>Recent Posts</h2>
+      </header>
+      <ul>
+        <li><a href="#">Nothing happened</a></li>
+        <li><a href="#">My Dearest Cthulhu</a></li>
+        <li><a href="#">The Meme Meme</a></li>
+        <li><a href="#">Now Full Cyborg</a></li>
+        <li><a href="#">Temporal Flux</a></li>
+      </ul>
+    </section>
+
+    <!-- Recent Comments -->
+    <section class="is-recent-comments">
+      <header>
+        <h2>Recent Comments</h2>
+      </header>
+      <ul>
+        <li>case on <a href="#">Now Full Cyborg</a></li>
+        <li>molly on <a href="#">Untitled Post</a></li>
+        <li>case on <a href="#">Temporal Flux</a></li>
+      </ul>
+    </section>
+
+    <!-- Calendar -->
+    <section class="is-calendar">
+      <div class="inner">
+        <table>
+          <caption>February 2013</caption>
+          <thead>
+          <tr>
+            <th scope="col" title="Monday">M</th>
+            <th scope="col" title="Tuesday">T</th>
+            <th scope="col" title="Wednesday">W</th>
+            <th scope="col" title="Thursday">T</th>
+            <th scope="col" title="Friday">F</th>
+            <th scope="col" title="Saturday">S</th>
+            <th scope="col" title="Sunday">S</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td colspan="4" class="pad"><span>&nbsp;</span></td>
+            <td><span>1</span></td>
+            <td><span>2</span></td>
+            <td><span>3</span></td>
+          </tr>
+          <tr>
+            <td><span>4</span></td>
+            <td><span>5</span></td>
+            <td><a href="#">6</a></td>
+            <td><span>7</span></td>
+            <td><span>8</span></td>
+            <td><span>9</span></td>
+            <td><a href="#">10</a></td>
+          </tr>
+          <tr>
+            <td><span>11</span></td>
+            <td><span>12</span></td>
+            <td><span>13</span></td>
+            <td class="today"><a href="#">14</a></td>
+            <td><span>15</span></td>
+            <td><span>16</span></td>
+            <td><span>17</span></td>
+          </tr>
+          <tr>
+            <td><span>18</span></td>
+            <td><span>19</span></td>
+            <td><span>20</span></td>
+            <td><span>21</span></td>
+            <td><span>22</span></td>
+            <td><a href="#">23</a></td>
+            <td><span>24</span></td>
+          </tr>
+          <tr>
+            <td><a href="#">25</a></td>
+            <td><span>26</span></td>
+            <td><span>27</span></td>
+            <td><span>28</span></td>
+            <td class="pad" colspan="3"><span>&nbsp;</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Copyright -->
+    <div id="copyright">
+      <p>
+        &copy; 2013 An Untitled Site <a target="_blank" href="http://www.huiyi8.com/moban/">网页模板</a>.
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>

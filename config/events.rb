@@ -12,19 +12,19 @@ WebsocketRails::EventMap.describe do
   #   end
   # The above will handle an event triggered on the client like `product.new`.
   # The :client_connected method is fired automatically when a new client connects
-  subscribe :client_connected, to: MessageController, with_method: :client_connected
-
-  # You can subscribe any number of controller actions to a single event
-  subscribe :new_message, to: MessageController, with_method: :new_message
-  subscribe :new_message, to: MessageController, with_method: :log_message
-
-  subscribe :new_user, to: MessageController, with_method: :new_user
-  subscribe :change_username, to: MessageController, with_method: :change_username
-
-  namespace :product do
-    subscribe :new, to: MessageController, with_method: :new_product
-  end
-
-  # The :client_disconnected method is fired automatically when a client disconnects
-  subscribe :client_disconnected, to: MessageController, with_method: :delete_user
+  # subscribe :client_connected, to: MessageController, with_method: :client_connected
+  #
+  # # You can subscribe any number of controller actions to a single event
+  # subscribe :new_message, to: MessageController, with_method: :new_message
+  # subscribe :new_message, to: MessageController, with_method: :log_message
+  #
+  # subscribe :new_user, to: MessageController, with_method: :new_user
+  # subscribe :change_username, to: MessageController, with_method: :change_username
+  #
+  # namespace :product do
+  #   subscribe :new, to: MessageController, with_method: :new_product
+  # end
+  #
+  # # The :client_disconnected method is fired automatically when a client disconnects
+  # subscribe :client_disconnected, to: MessageController, with_method: :delete_user
 end

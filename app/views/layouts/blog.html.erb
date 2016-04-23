@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
+
+<!--[if IE 9]>
+<html lang="en" class="ie9"> <![endif]-->
+
+<!--[if !IE]><!-->
+<html lang="en"> <!--<![endif]-->
+<head>
+  <title>我的博客空间</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'themes/default', media: 'all', 'data-turbolinks-track' => true, id: 'style_color' %>
+  <%= csrf_meta_tags %>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+</head>
+
+<!-- BEGIN BODY -->
+
+<body class="page-header-fixed page-sidebar-fixed page-footer-fixed">
+
+<!-- BEGIN HEADER -->
+
+<div class="header navbar navbar-inverse navbar-fixed-top">
+
+  <!-- BEGIN TOP NAVIGATION BAR -->
+
+  <div class="navbar-inner">
+
+    <div class="container-fluid">
+
+      <!-- BEGIN LOGO -->
+
+      <a class="brand" href="index.html">
+
+        <img src="<%= asset_path('image/logo.png') %>" alt="logo"/>
+
+      </a>
+
+      <!-- END LOGO -->
+
+      <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+
+      <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+
+        <img src="<%= asset_path('image/menu-toggler.png') %>" alt=""/>
+
+      </a>
+
+      <!-- END RESPONSIVE MENU TOGGLER -->
+
+      <!-- BEGIN TOP NAVIGATION MENU -->
+
+      <ul class="nav pull-right">
+
+        <!-- BEGIN NOTIFICATION DROPDOWN -->
+
+        <!--<li class="dropdown" id="score_notification_bar">-->
+
+        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+
+        <!--<i class="icon-warning-sign"></i>-->
+
+        <!--<span class="badge" style="display: none" id="score_notification_badge">0</span>-->
+
+        <!--</a>-->
+
+        <!--<ul class="dropdown-menu extended notification" id="score_notification">-->
+
+        <!--<li>-->
+
+        <!--<p>暂无新评分</p>-->
+
+        <!--</li>-->
+
+        <!--</ul>-->
+
+        <!--</li>-->
+
+        <!-- END NOTIFICATION DROPDOWN -->
+
+        <!-- BEGIN INBOX DROPDOWN -->
+
+        <!--<li class="dropdown" id="order_notification_bar">-->
+
+        <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+
+        <!--<i class="icon-envelope"></i>-->
+
+        <!--<span class="badge" style="display: none" id="order_notification_badge">0</span>-->
+
+        <!--</a>-->
+
+        <!--<ul class="dropdown-menu extended inbox" id="order_notification">-->
+
+        <!--<li class="count">-->
+
+        <!--<p>暂无新消息</p>-->
+
+        <!--</li>-->
+
+        <!--</ul>-->
+
+        <!--</li>-->
+
+        <!-- END INBOX DROPDOWN -->
+
+        <!-- BEGIN USER LOGIN DROPDOWN -->
+
+        <li class="dropdown user">
+
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+            <img alt="" src="<%= asset_path('image/avatar1_small.jpg') %>"/>
+
+            <span class="username"><%= session[:name] %></span>
+
+            <i class="icon-angle-down"></i>
+
+          </a>
+
+          <ul class="dropdown-menu">
+
+            <li><a href="/modify"><i class="icon-edit"></i> 修改密码</a></li>
+
+            <li><a href="/logout"><i class="icon-key"></i> 退出账号</a></li>
+
+
+          </ul>
+
+        </li>
+
+        <!-- END USER LOGIN DROPDOWN -->
+
+      </ul>
+
+      <!-- END TOP NAVIGATION MENU -->
+
+    </div>
+
+  </div>
+
+  <!-- END TOP NAVIGATION BAR -->
+
+</div>
+
+<!-- END HEADER -->
+
+<!-- BEGIN CONTAINER -->
+
+<div class="page-container row-fluid">
+
+
+  <!-- BEGIN SIDEBAR1 -->
+
+  <div class="page-sidebar nav-collapse collapse">
+
+    <!-- BEGIN SIDEBAR MENU1 -->
+
+    <ul class="page-sidebar-menu">
+
+      <li>
+
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+        <div class="sidebar-toggler hidden-phone"></div>
+
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+      </li>
+
+      <li>
+
+        <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+
+        <form class="sidebar-search">
+
+          <div class="input-box">
+
+            <a href="javascript:;" class="remove"></a>
+
+            <input type="text" placeholder="Search..."/>
+
+            <input type="button" class="submit" value=" "/>
+
+          </div>
+
+        </form>
+
+        <!-- END RESPONSIVE QUICK SEARCH FORM -->
+
+      </li>
+
+      <li class="start">
+
+        <a class="ajaxify blog" href="/blog">
+
+          <i class="icon-home"></i>
+
+          <span class="title">Latest Post</span>
+
+          <span class="selected"></span>
+
+        </a>
+
+      </li>
+
+      <li class="last">
+
+        <a class="javascript:;">
+
+          <i class="icon-tasks"></i>
+
+          <span class="title">albums</span>
+
+          <span class="arrow"></span>
+
+        </a>
+
+        <ul class="sub-menu">
+
+          <li>
+
+            <a class="ajaxify blog" href="/blog">
+
+              Google Maps</a>
+
+          </li>
+
+          <li>
+
+            <a class="ajaxify blog" href="/blog">
+
+              Vector Maps</a>
+
+          </li>
+
+        </ul>
+
+      </li>
+
+
+    </ul>
+
+    <!-- END SIDEBAR MENU1 -->
+
+  </div>
+
+  <!-- END SIDEBAR1 -->
+
+  <!-- BEGIN PAGE -->
+
+  <div class="page-content">
+
+    <!-- BEGIN PAGE CONTAINER-->
+
+    <div class="container-fluid">
+
+      <!-- BEGIN PAGE HEADER-->
+
+      <div class="row-fluid">
+
+        <div class="span12">
+
+          <!-- BEGIN STYLE CUSTOMIZER -->
+
+          <div class="color-panel hidden-phone">
+
+            <div class="color-mode-icons icon-color"></div>
+
+            <div class="color-mode-icons icon-color-close"></div>
+
+            <div class="color-mode">
+
+              <p>THEME COLOR</p>
+
+              <ul class="inline">
+
+                <li class="color-black current color-default" data-style="default"></li>
+
+                <li class="color-blue" data-style="blue"></li>
+
+                <li class="color-brown" data-style="brown"></li>
+
+                <li class="color-purple" data-style="purple"></li>
+
+                <li class="color-grey" data-style="grey"></li>
+
+                <li class="color-white color-light" data-style="light"></li>
+
+              </ul>
+
+              <label>
+
+                <span>Layout</span>
+
+                <select class="layout-option m-wrap small">
+
+                  <option value="fluid" selected>Fluid</option>
+
+                  <option value="boxed">Boxed</option>
+
+                </select>
+
+              </label>
+
+              <label>
+
+                <span>Header</span>
+
+                <select class="header-option m-wrap small">
+
+                  <option value="fixed" selected>Fixed</option>
+
+                  <option value="default">Default</option>
+
+                </select>
+
+              </label>
+
+              <label>
+
+                <span>Sidebar</span>
+
+                <select class="sidebar-option m-wrap small">
+
+                  <option value="fixed">Fixed</option>
+
+                  <option value="default" selected>Default</option>
+
+                </select>
+
+              </label>
+
+              <label>
+
+                <span>Footer</span>
+
+                <select class="footer-option m-wrap small">
+
+                  <option value="fixed">Fixed</option>
+
+                  <option value="default" selected>Default</option>
+
+                </select>
+
+              </label>
+
+            </div>
+
+          </div>
+
+          <!-- END BEGIN STYLE CUSTOMIZER -->
+
+          <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+
+          <h3 class="page-title">
+
+            Blog
+            <small>blog listing and post samples</small>
+
+          </h3>
+
+          <ul class="breadcrumb">
+
+            <li>
+
+              <i class="icon-home"></i>
+
+              <a href="index.html">Home</a>
+
+              <i class="icon-angle-right"></i>
+
+            </li>
+
+            <li>
+
+              <a href="#">Pages</a>
+
+              <i class="icon-angle-right"></i>
+
+            </li>
+
+            <li><a href="#">Blog</a></li>
+
+          </ul>
+
+          <!-- END PAGE TITLE & BREADCRUMB-->
+
+        </div>
+
+      </div>
+
+      <!-- END PAGE HEADER-->
+
+      <div id="messages">
+      </div>
+      <div id="confirm">
+        <%= render '/layouts/confirm_modal' %>
+      </div>
+      <div class="page-content-body">
+        <div class="span9" style="min-height: 480px;">
+          <%= yield %>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HERE WILL BE LOADED AN AJAX CONTENT -->
+
+  </div>
+
+  <!-- BEGIN PAGE -->
+
+</div>
+
+<!-- END CONTAINER -->
+
+<!-- BEGIN FOOTER -->
+
+<div class="footer">
+
+  <div class="footer-inner">
+
+    &copy; 优雅科技 2013
+
+  </div>
+
+  <div class="footer-tools">
+
+			<span class="go-top">
+
+			<i class="icon-angle-up"></i>
+
+			</span>
+
+  </div>
+
+</div>
+
+<!-- END FOOTER -->
+<script>
+
+
+</script>
+<!-- END BODY -->
+</body>
+</html>

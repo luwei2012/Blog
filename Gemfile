@@ -38,7 +38,7 @@ end
 gem 'will_paginate', '~> 3.1.0'
 gem 'xmpp4r', '~> 0.5.6'
 gem 'whenever', '~> 0.9.4'
-gem 'mysql2', '~> 0.4.3'
+gem 'mysql2', '~> 0.3.18'
 gem 'redis', '~> 3.2.2'
 gem 'nokogiri', '~> 1.6.7.2'
 gem 'rack', '~> 1.6.4'
